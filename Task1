@@ -1,0 +1,7 @@
+r= float(input("Input the radius of the circle:"))
+area= 3.1415926535897932384626433832795028841971*r*r
+print("The area of the circle with radius %.1f is: %.16f"%(r,area))
+#Second task
+file=input("Input the Filename:")
+fileext= file.split(".")
+print("The extension of the file is: "+ (fileext[-1])+ "thon")

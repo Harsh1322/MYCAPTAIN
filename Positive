@@ -1,0 +1,6 @@
+lim = int(input("Enter the limit: "))
+a = [int(input()) for i in range(lim)]
+i=0
+for i in range(lim):
+    if a[i]>=0:
+        print(a[i], end=" ")

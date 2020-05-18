@@ -1,0 +1,11 @@
+def most_frequent(line):
+    mydict={}
+    for i in line:
+        if i in mydict:
+            mydict[i]+=1
+        else:
+            mydict[i]=1
+    newlist=(sorted(mydict.items(),reverse = True, key = lambda x: x[1]))
+    for i in newlist:
+       print(i[0] , "= %02d"%int(i[1]))
+most_frequent(str(input("Please enter a string")))

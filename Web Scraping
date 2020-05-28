@@ -1,0 +1,45 @@
+#Web Scraping project using databases.
+import requests
+from bs4 import BeautifulSoup
+import sqlite3
+
+def open_table(dbname):
+    connect= sqlite3.connect(dbname)
+    connect.execute("CREATE TABLE IF NOT EXISTS RESTAURANTS(TYPE TEXT, NAME TEXT, RATINGS TEXT, AREA TEXT)")
+    print("TAble created.")
+    connect.close()
+def insert_values(dbanme, values):
+    connect= sqlite3.connect(dbname)
+    connect.execute("INSERT INTO RESTAURANTS(TYPE,NAME,RATINGS,AREA) VALUES (?,?,?,?)")
+    connect.commit()
+    connect.close()
+def retrieve_info(dbname):
+    connect= sqlite3.connect(dbname)
+    pointer=connect.cursor()
+    pointer.execute("SELECT * FROM RESTAURANTS")
+    data= pointer.fetchall()
+    for entry in data:
+        print(entry)
+    connect.close()
+if __name__=='__main__':
+    zomato_url = "https://www.zomato.com/chennai/dine-out?page="
+    page_num= int(input("Enter the number of pages of data to be processed?"))
+    dbname= input("Enter he name of database:")
+    open_table(dbname)
+    for page in range(1,page_num+1):
+        req=requests.get(zomato_url + str(page))
+        cont=req.content
+        soup=BeautifulSoup(cont,"html.parser")
+        print(zomato_url + str(page))
+        hotels=soup.findAll("div",{"class":"ui divider"})
+        for hotel in hotels:
+            print("1")
+            hotel_dict={}
+            hotel_dict["type"]= hotel.find("a",{"class":"zdark"}).text
+            hotel_dict["name"]= hotel.find("a",{"class": "result-title"}).text
+            hotel_dict["ratings"]= hotel.fond("span",{"class": "rating-value"}).text
+            hotel_dict["area"]= hotel.find("a",{"class":"ln24"}).text
+            #print(hotel_dict.values())
+            insert_values(dbname,tuple(hotel_dict.values()))
+    retrieve_info(dbname)
+            
